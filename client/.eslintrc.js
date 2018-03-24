@@ -5,10 +5,12 @@ module.exports = {
     'prettier',
     'prettier/flowtype',
     'prettier/react',
+    'plugin:jest/recommended',
   ],
   parser: 'babel-eslint',
   env: {
     browser: true,
+    'jest/globals': true
   },
   rules: {
     indent: ['error', 2, {
@@ -27,5 +29,5 @@ module.exports = {
     'flowtype-errors/show-errors': 2,
     'flowtype-errors/show-warnings': 1,
   },
-  plugins: ['prettier','flowtype', 'flowtype-errors'],
+  plugins: ['prettier', 'flowtype', 'flowtype-errors', 'jest'],
 };
