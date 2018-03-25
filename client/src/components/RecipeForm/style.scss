@@ -1,0 +1,27 @@
+@import '../../theme/variables';
+
+.form-recipe {
+  input {
+    margin-top: 8px !important;
+  }
+
+  input:focus, textarea:focus {
+    border-color: $primary !important;
+  };
+
+  input.error, textarea.error {
+    border-color: $error !important;
+  }
+
+  button {
+    display: block !important;
+    margin-top: 8px !important;
+    color: #FFF !important;
+    background: $primary !important;
+  }
+
+  .label {
+    color: $error !important;
+    border-color: $error !important;
+  }
+}

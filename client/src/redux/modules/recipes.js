@@ -7,7 +7,7 @@ export const CREATE_RECIPE = 'RECIPES/CREATE_RECIPE';
 export const EDIT_RECIPE = 'RECIPES/EDIT_RECIPE';
 export const LIKE_RECIPE = 'RECIPES/LIKE_RECIPE';
 
-type RecipeWithoutId = {
+export type RecipeWithoutId = {
   name: string,
   ingredients: string[],
   description: string,
@@ -16,7 +16,7 @@ type RecipeWithoutId = {
   likes: number,
 };
 
-type Recipe = RecipeWithoutId & { id: number };
+export type Recipe = RecipeWithoutId & { id: number };
 
 export type Recipes = Recipe[];
 

@@ -3,7 +3,7 @@ const faker = require('faker');
 
 module.exports = function() {
   return {
-    recipes: _.times(100, index => ({
+    recipes: _.times(5, index => ({
       id: index,
       name: faker.lorem.words(3),
       ingredients: _.times(4 + faker.random.number(6), () =>

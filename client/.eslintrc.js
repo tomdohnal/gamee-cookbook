@@ -34,6 +34,9 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'off',
     'react/no-did-mount-set-state': 'off',
     'no-shadow': 'off',
+    'jsx-a11y/label-has-for': 'off',
+    'react/no-unused-prop-types': 'off',
+    'react/no-array-index-key': 'off',
   },
   plugins: ['prettier', 'flowtype', 'flowtype-errors', 'jest'],
 };
