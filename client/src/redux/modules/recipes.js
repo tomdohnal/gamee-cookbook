@@ -34,8 +34,10 @@ export const fetchRecipes = () => (dispatch: FetchRecipesDispatch) =>
 
 type LikeRecipeAction = {
   type: typeof LIKE_RECIPE,
-  likedRecipeId: number,
-  payload: Recipe,
+  payload: {
+    likedRecipeId: number,
+    recipe: Recipe,
+  },
 };
 
 type LikeRecipeDispatch = (action: LikeRecipeAction) => void;
@@ -48,8 +50,7 @@ export const likeRecipe = (recipeId: number, currentLikesCount: number) => (
     .then(({ data }) => {
       dispatch({
         type: LIKE_RECIPE,
-        likedRecipeId: recipeId,
-        payload: data,
+        payload: { likedRecipeId: recipeId, recipe: data },
       });
     });
 
@@ -62,8 +63,8 @@ export default createReducer([], {
     }
 
     return state.map(recipe => {
-      if (recipe.id === action.likedRecipeId) {
-        return action.payload;
+      if (recipe.id === action.payload.likedRecipeId) {
+        return action.payload.recipe;
       }
 
       return recipe;

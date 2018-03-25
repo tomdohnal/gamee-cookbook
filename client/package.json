@@ -21,6 +21,7 @@
     "semantic-ui-react": "^0.79.0"
   },
   "devDependencies": {
+    "axios-mock-adapter": "^1.14.1",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
@@ -43,6 +44,7 @@
     "jest": "^22.4.3",
     "lodash": "^4.17.5",
     "node-sass": "^4.7.2",
+    "redux-mock-store": "^1.5.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
     "webpack": "^4.2.0",

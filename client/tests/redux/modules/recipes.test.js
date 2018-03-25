@@ -1,9 +1,16 @@
 import _ from 'lodash';
 import faker from 'faker';
+import AxiosMockAdapter from 'axios-mock-adapter';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
+import axios from '../../../src/axios';
 
 import reducer, {
   FETCH_RECIPES,
   LIKE_RECIPE,
+  fetchRecipes,
+  likeRecipe,
 } from '../../../src/redux/modules/recipes';
 
 const createRecipe = index => ({
@@ -19,6 +26,43 @@ const createRecipe = index => ({
 const createRecipes = count => _.times(count, index => createRecipe(index));
 
 describe('recipes', () => {
+  describe('action creators', () => {
+    const mockAxios = new AxiosMockAdapter(axios);
+    const mockStore = configureMockStore([thunk]);
+
+    it('creates FetchRecipesAction action', () => {
+      const recipes = createRecipes(10);
+
+      const expectedActions = [{ type: FETCH_RECIPES, payload: recipes }];
+
+      const store = mockStore();
+
+      mockAxios.onGet('/recipes').reply(200, recipes);
+
+      store.dispatch(fetchRecipes()).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('creates LikeRecipeAction action', () => {
+      const likedRecipeId = 5;
+
+      const recipe = createRecipes(likedRecipeId);
+
+      const expectedActions = [
+        { type: LIKE_RECIPE, payload: { likedRecipeId, recipe } },
+      ];
+
+      const store = mockStore();
+
+      mockAxios.onPatch(`/recipes/${likedRecipeId}`).reply(200, recipe);
+
+      store.dispatch(likeRecipe(likedRecipeId, 10)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+  });
+
   describe('reducer', () => {
     it('handles FETCH_RECIPES action with empty current state', () => {
       const recipes = createRecipes(10);
@@ -45,10 +89,15 @@ describe('recipes', () => {
     });
 
     it('handles LIKE_RECIPE action with no current state', () => {
+      const likedRecipeId = 5;
+
       const likeRecipeAction = {
         type: LIKE_RECIPE,
-        likedRecipeId: 5,
-        payload: createRecipe(5),
+        likedRecipeId,
+        payload: {
+          likedRecipeId,
+          recipe: createRecipe(likedRecipeId),
+        },
       };
 
       const currentState = [];
@@ -62,13 +111,16 @@ describe('recipes', () => {
       const likeRecipeAction = {
         type: LIKE_RECIPE,
         likedRecipeId,
-        payload: createRecipe(5),
+        payload: {
+          likedRecipeId,
+          recipe: createRecipe(likedRecipeId),
+        },
       };
 
       const currentState = createRecipes(10);
 
       expect(reducer(currentState, likeRecipeAction)[likedRecipeId]).toEqual(
-        likeRecipeAction.payload,
+        likeRecipeAction.payload.recipe,
       );
     });
 
