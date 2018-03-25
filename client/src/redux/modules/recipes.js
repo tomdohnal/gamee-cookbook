@@ -4,6 +4,7 @@ import axios from '../../axios';
 
 export const FETCH_RECIPES = 'RECIPES/FETCH_RECIPES';
 export const CREATE_RECIPE = 'RECIPES/CREATE_RECIPE';
+export const EDIT_RECIPE = 'RECIPES/EDIT_RECIPE';
 export const LIKE_RECIPE = 'RECIPES/LIKE_RECIPE';
 
 type RecipeWithoutId = {
@@ -51,6 +52,21 @@ export const createRecipe = (recipe: RecipeWithoutId) => (
     });
   });
 
+type EditRecipeAction = {
+  type: typeof EDIT_RECIPE,
+  payload: Recipe,
+};
+
+type EditRecipeDispatch = (action: EditRecipeAction) => void;
+
+export const editRecipe = (recipe: Recipe) => (dispatch: EditRecipeDispatch) =>
+  axios.put(`/recipes/${recipe.id}`, { ...recipe }).then(({ data }) => {
+    dispatch({
+      type: EDIT_RECIPE,
+      payload: data,
+    });
+  });
+
 type LikeRecipeAction = {
   type: typeof LIKE_RECIPE,
   payload: {
@@ -80,6 +96,19 @@ export default createReducer([], {
     ...state,
     action.payload,
   ],
+  [EDIT_RECIPE]: (state: Recipes, action: EditRecipeAction): Recipes => {
+    if (!state.length) {
+      return state;
+    }
+
+    return state.map(recipe => {
+      if (recipe.id === action.payload.id) {
+        return action.payload;
+      }
+
+      return recipe;
+    });
+  },
   [LIKE_RECIPE]: (state: Recipes, action: LikeRecipeAction): Recipes => {
     if (!state.length) {
       return state;

@@ -9,9 +9,11 @@ import axios from '../../../src/axios';
 import reducer, {
   FETCH_RECIPES,
   CREATE_RECIPE,
+  EDIT_RECIPE,
   LIKE_RECIPE,
   fetchRecipes,
   createRecipe,
+  editRecipe,
   likeRecipe,
 } from '../../../src/redux/modules/recipes';
 
@@ -33,7 +35,7 @@ describe('recipes', () => {
     const mockAxios = new AxiosMockAdapter(axios);
     const mockStore = configureMockStore([thunk]);
 
-    it('creates FetchRecipesAction action', () => {
+    it('creates fetchRecipesAction action', () => {
       const recipes = createFakeRecipes(10);
 
       const expectedActions = [{ type: FETCH_RECIPES, payload: recipes }];
@@ -47,7 +49,7 @@ describe('recipes', () => {
       });
     });
 
-    it('creates createFakeRecipeAction action', () => {
+    it('creates createRecipeAction action', () => {
       const newRecipeId = 10;
 
       const recipe = createFakeRecipe(newRecipeId);
@@ -63,7 +65,27 @@ describe('recipes', () => {
       });
     });
 
-    it('creates LikeRecipeAction action', () => {
+    it('creates editRecipeAction action', () => {
+      const editedRecipeId = 10;
+
+      const editedRecipe = createFakeRecipe(editedRecipeId);
+
+      const expectedActions = [
+        { type: EDIT_RECIPE, payload: { ...editedRecipe } },
+      ];
+
+      const store = mockStore();
+
+      mockAxios
+        .onPut(`/recipes/${editedRecipe}`)
+        .reply(200, { ...editedRecipe });
+
+      store.dispatch(editRecipe(editedRecipe)).then(() => {
+        expect(store.getActions()).toEqual(expectedActions);
+      });
+    });
+
+    it('creates likeRecipeAction action', () => {
       const likedRecipeId = 5;
 
       const recipe = createFakeRecipe(likedRecipeId);
@@ -132,6 +154,34 @@ describe('recipes', () => {
         ...currentState,
         recipe,
       ]);
+    });
+
+    it('handles EDIT_RECIPE action with empty current state', () => {
+      const editedRecipe = createFakeRecipe(5);
+
+      const editRecipeAction = {
+        type: EDIT_RECIPE,
+        payload: editedRecipe,
+      };
+
+      const currentState = [];
+
+      expect(reducer(currentState, editRecipeAction)).toEqual(currentState);
+    });
+
+    it('handles EDIT_RECIPE action with non-empty current state', () => {
+      const editedRecipe = createFakeRecipe(5);
+
+      const editRecipeAction = {
+        type: EDIT_RECIPE,
+        payload: editedRecipe,
+      };
+
+      const currentState = createFakeRecipes(10);
+
+      expect(reducer(currentState, editRecipeAction)[editedRecipe.id]).toEqual(
+        editedRecipe,
+      );
     });
 
     it('handles LIKE_RECIPE action with no current state', () => {
