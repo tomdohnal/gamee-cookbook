@@ -5,6 +5,9 @@ import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { Provider as ReduxProvider } from 'react-redux';
 
 import Home from './pages/Home';
+import CreateRecipe from './pages/CreateRecipe';
+import RecipeDetail from './pages/RecipeDetail';
+import EditRecipe from './pages/EditRecipe';
 import store from './redux';
 
 ReactDOM.render(
@@ -14,6 +17,9 @@ ReactDOM.render(
         <div>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/create" component={CreateRecipe} />
+            <Route exact path="/:id" component={RecipeDetail} />
+            <Route exact path="/edit/:id" component={EditRecipe} />
           </Switch>
         </div>
       </BrowserRouter>

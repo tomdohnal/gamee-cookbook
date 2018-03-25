@@ -1,5 +1,14 @@
+// @flow
 import React from 'react';
 
-const Home = () => <div>Gamee Recipes</div>;
+import Header from '../../components/Header';
+
+const Home = () => (
+  <div>
+    <Header rightLink="/create" rightIcon="plus" rightText="Create">
+      Cookbook
+    </Header>
+  </div>
+);
 
 export default Home;

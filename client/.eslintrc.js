@@ -28,6 +28,10 @@ module.exports = {
     'react/prop-types': 'off',
     'flowtype-errors/show-errors': 2,
     'flowtype-errors/show-warnings': 1,
+    'react/require-default-props': 'off',
+    'jsx-a11y/anchor-is-valid': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
   },
   plugins: ['prettier', 'flowtype', 'flowtype-errors', 'jest'],
 };
