@@ -3,10 +3,10 @@ import createReducer from '../createReducer';
 import axios from '../../axios';
 
 export const FETCH_RECIPES = 'RECIPES/FETCH_RECIPES';
+export const CREATE_RECIPE = 'RECIPES/CREATE_RECIPE';
 export const LIKE_RECIPE = 'RECIPES/LIKE_RECIPE';
 
-type Recipe = {
-  id: number,
+type RecipeWithoutId = {
   name: string,
   ingredients: string[],
   description: string,
@@ -14,6 +14,8 @@ type Recipe = {
   cookTime: number,
   likes: number,
 };
+
+type Recipe = RecipeWithoutId & { id: number };
 
 type Recipes = Recipe[];
 
@@ -28,6 +30,23 @@ export const fetchRecipes = () => (dispatch: FetchRecipesDispatch) =>
   axios.get('/recipes').then(({ data }) => {
     dispatch({
       type: FETCH_RECIPES,
+      payload: data,
+    });
+  });
+
+type CreateRecipeAction = {
+  type: typeof CREATE_RECIPE,
+  payload: Recipe,
+};
+
+type CreateRecipeDispatch = (action: CreateRecipeAction) => void;
+
+export const createRecipe = (recipe: RecipeWithoutId) => (
+  dispatch: CreateRecipeDispatch,
+) =>
+  axios.post('/recipes', { ...recipe }).then(({ data }) => {
+    dispatch({
+      type: CREATE_RECIPE,
       payload: data,
     });
   });
@@ -57,6 +76,10 @@ export const likeRecipe = (recipeId: number, currentLikesCount: number) => (
 export default createReducer([], {
   [FETCH_RECIPES]: (state: Recipes, action: FetchRecipesAction): Recipes =>
     action.payload,
+  [CREATE_RECIPE]: (state: Recipes, action: CreateRecipeAction): Recipes => [
+    ...state,
+    action.payload,
+  ],
   [LIKE_RECIPE]: (state: Recipes, action: LikeRecipeAction): Recipes => {
     if (!state.length) {
       return state;
