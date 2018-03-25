@@ -32,6 +32,8 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
+    'react/no-did-mount-set-state': 'off',
+    'no-shadow': 'off',
   },
   plugins: ['prettier', 'flowtype', 'flowtype-errors', 'jest'],
 };

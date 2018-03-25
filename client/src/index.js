@@ -14,14 +14,12 @@ ReactDOM.render(
   <AppContainer>
     <ReduxProvider store={store}>
       <BrowserRouter>
-        <div>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/create" component={CreateRecipe} />
-            <Route exact path="/:id" component={RecipeDetail} />
-            <Route exact path="/edit/:id" component={EditRecipe} />
-          </Switch>
-        </div>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/create" component={CreateRecipe} />
+          <Route exact path="/:id" component={RecipeDetail} />
+          <Route exact path="/edit/:id" component={EditRecipe} />
+        </Switch>
       </BrowserRouter>
     </ReduxProvider>
   </AppContainer>,

@@ -1,0 +1,10 @@
+@import '../../theme/variables';
+
+.error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 24px;
+  color: $error;
+}

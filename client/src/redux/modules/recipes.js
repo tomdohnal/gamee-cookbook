@@ -18,7 +18,7 @@ type RecipeWithoutId = {
 
 type Recipe = RecipeWithoutId & { id: number };
 
-type Recipes = Recipe[];
+export type Recipes = Recipe[];
 
 type FetchRecipesAction = {
   type: typeof FETCH_RECIPES,
