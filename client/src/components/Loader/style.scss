@@ -1,5 +1,8 @@
+@import '../../theme/variables';
+
 .loader {
-  height: 100%;
-  display: flex;
-  align-items: center;
+  position: absolute;
+  top: calc(50% + #{$headerHeight / 2});
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

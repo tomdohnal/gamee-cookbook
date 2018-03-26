@@ -3,6 +3,7 @@
 .header {
   background: $primary;
   display: flex;
+  height: $headerHeight;
   justify-content: space-between;
   color: #FFF;
   font-size: 18px;
@@ -14,6 +15,7 @@
 
   a {
     color: #FFF;
+    cursor: pointer;
   }
 
   .left, .right {

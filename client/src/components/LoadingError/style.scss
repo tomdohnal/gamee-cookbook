@@ -1,10 +1,10 @@
 @import '../../theme/variables';
 
 .error {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+  position: absolute;
+  top: calc(50% + #{$headerHeight / 2});
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 24px;
   color: $error;
 }

@@ -19,12 +19,17 @@ type Props = {
 };
 
 class CreateRecipe extends React.Component<Props> {
+  onFormSubmit = (recipe: RecipeWithoutId) => {
+    const { createRecipe } = this.props;
+
+    createRecipe(recipe).then(() => this.props.history.push('/'));
+  };
+
   navigateBack = () => {
     this.props.history.goBack();
   };
 
   render() {
-    const { createRecipe } = this.props;
     return (
       <React.Fragment>
         <Header
@@ -35,7 +40,7 @@ class CreateRecipe extends React.Component<Props> {
           Create Recipe
         </Header>
         <Container>
-          <RecipeForm onFormSubmit={createRecipe} />
+          <RecipeForm onFormSubmit={this.onFormSubmit} />
         </Container>
       </React.Fragment>
     );

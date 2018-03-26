@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react'
+import { Container as SemanticUIContainer } from 'semantic-ui-react';
 
 import './style.scss';
 
@@ -8,7 +9,7 @@ type Props = {
 };
 
 const Container = ({ children }: Props) => (
-  <div className="container">{children}</div>
+  <SemanticUIContainer>{children}</SemanticUIContainer>
 );
 
 export default Container;

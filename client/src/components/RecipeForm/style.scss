@@ -1,7 +1,7 @@
 @import '../../theme/variables';
 
 .form-recipe {
-  input {
+  input:not(:first-of-type) {
     margin-top: 8px !important;
   }
 
