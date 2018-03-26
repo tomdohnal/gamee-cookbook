@@ -6,12 +6,13 @@ import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import Error from '../../components/Error';
 import Container from '../../components/Container';
+import Paint from '../../components/Paint';
 import { type Recipe } from '../../redux/modules/recipes';
 
 export type Props = {
   recipe: Recipe,
   history: {
-    goBack: () => void,
+    push: (path: string) => void,
   },
   loading: boolean,
   fetchingError: boolean,
@@ -23,8 +24,8 @@ export type Props = {
 };
 
 class RecipeDetail extends React.Component<Props> {
-  navigateBack = () => {
-    this.props.history.goBack();
+  navigateHome = () => {
+    this.props.history.push('/');
   };
 
   render() {
@@ -39,7 +40,7 @@ class RecipeDetail extends React.Component<Props> {
       <React.Fragment>
         <Header
           leftIcon="arrow left"
-          leftAction={this.navigateBack}
+          leftAction={this.navigateHome}
           rightIcon="edit"
           rightText="Edit"
           rightLink={`edit/${id}`}
@@ -80,6 +81,15 @@ class RecipeDetail extends React.Component<Props> {
                   <strong>Likes:&nbsp;</strong>
                   {recipe.likes}
                 </p>
+                {recipe.drawing &&
+                  recipe.drawing.length && (
+                    <div>
+                      <p>
+                        <strong>Drawing:</strong>
+                      </p>
+                      <Paint drawing={recipe.drawing} disabled />
+                    </div>
+                  )}
               </React.Fragment>
             )}
         </Container>

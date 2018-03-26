@@ -13,6 +13,10 @@ module.exports = function() {
       prepTime: (faker.random.number(2) + 1) * 10,
       cookTime: (faker.random.number(8) + 1) * 10,
       likes: faker.random.number(20),
+      drawing: _.times(faker.random.number(100), () => ({
+        x: faker.random.number(400),
+        y: faker.random.number(200),
+      })),
     })),
   };
 };

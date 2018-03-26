@@ -27,7 +27,12 @@ const Home = ({ recipes, loading, fetchingError }: Props) => (
       ) : (
         recipes.map(recipe => (
           <div className="recipe" key={recipe.id}>
-            <Link to={`/${recipe.id}`}>{recipe.name}</Link>
+            <h1>
+              <Link to={`/${recipe.id}`}>{recipe.name}</Link>
+            </h1>
+            <p>
+              Cook time: {recipe.cookTime} Prep time: {recipe.prepTime}
+            </p>
           </div>
         ))
       )}

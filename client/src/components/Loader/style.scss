@@ -5,4 +5,19 @@
   top: calc(50% + #{$headerHeight / 2});
   left: 50%;
   transform: translate(-50%, -50%);
+  .loader-inner {
+    width: 120px;
+    height: 40px;
+    background-color: $primary;
+    margin: 100px auto;
+    animation: sk-rotateplane 0.4s infinite ease-in-out;
+  }
+  
+  @keyframes sk-rotateplane {
+    0% { 
+      transform: perspective(120px) rotateY(0deg);
+    } 100% { 
+      transform: perspective(240px) rotateY(180deg);
+    }
+  }
 }

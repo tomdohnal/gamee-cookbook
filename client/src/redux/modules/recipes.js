@@ -7,6 +7,11 @@ export const CREATE_RECIPE = 'RECIPES/CREATE_RECIPE';
 export const EDIT_RECIPE = 'RECIPES/EDIT_RECIPE';
 export const LIKE_RECIPE = 'RECIPES/LIKE_RECIPE';
 
+export type Point = {
+  x: number,
+  y: number,
+};
+
 export type RecipeWithoutId = {
   name: string,
   ingredients: string[],
@@ -14,6 +19,7 @@ export type RecipeWithoutId = {
   prepTime: number,
   cookTime: number,
   likes: number,
+  drawing?: Array<Point>,
 };
 
 export type Recipe = RecipeWithoutId & { id: number };

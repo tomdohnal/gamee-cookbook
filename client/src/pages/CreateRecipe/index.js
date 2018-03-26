@@ -13,7 +13,6 @@ import {
 
 type Props = {
   history: {
-    goBack: () => void,
     push: (path: string) => void,
   },
   createRecipe: (recipe: RecipeWithoutId) => Promise<Recipe>,
@@ -26,8 +25,8 @@ class CreateRecipe extends React.Component<Props> {
     return createRecipe(recipe).then(() => this.props.history.push('/'));
   };
 
-  navigateBack = () => {
-    this.props.history.goBack();
+  navigateHome = () => {
+    this.props.history.push('/');
   };
 
   render() {
@@ -35,7 +34,7 @@ class CreateRecipe extends React.Component<Props> {
       <React.Fragment>
         <Header
           leftIcon="arrow left"
-          leftAction={this.navigateBack}
+          leftAction={this.navigateHome}
           rightText="Save"
         >
           Create Recipe

@@ -3,7 +3,12 @@ import React, { Component } from 'react';
 import { Form, Button, Label } from 'semantic-ui-react';
 
 import './style.scss';
-import { type RecipeWithoutId, type Recipe } from '../../redux/modules/recipes';
+import Paint from '../../components/Paint';
+import {
+  type RecipeWithoutId,
+  type Recipe,
+  type Point,
+} from '../../redux/modules/recipes';
 
 type Props = {
   onFormSubmit: (recipe: RecipeWithoutId) => Promise<mixed>,
@@ -31,6 +36,9 @@ type State = {
     value: number,
     error: string,
   },
+  drawing: {
+    value: Array<Point>,
+  },
   submitting: boolean,
   submitError: boolean,
 };
@@ -48,7 +56,9 @@ class RecipeForm extends Component<Props, State> {
       error: '',
     },
     ingredients: {
-      value: (!!this.props.recipe && this.props.recipe.ingredients) || [''],
+      value: (!!this.props.recipe &&
+        this.props.recipe.ingredients.length &&
+        this.props.recipe.ingredients) || [''],
       error: '',
     },
     description: {
@@ -62,6 +72,14 @@ class RecipeForm extends Component<Props, State> {
     cookTime: {
       value: (!!this.props.recipe && this.props.recipe.cookTime) || 0,
       error: '',
+    },
+    drawing: {
+      value:
+        (!!this.props.recipe &&
+          this.props.recipe.drawing &&
+          this.props.recipe.drawing.length &&
+          this.props.recipe.drawing) ||
+        [],
     },
     submitting: false,
     submitError: false,
@@ -122,8 +140,22 @@ class RecipeForm extends Component<Props, State> {
     });
   };
 
+  onPaintDraw = ({ x, y }: Point) => {
+    this.setState(({ drawing }) => ({
+      drawing: { value: [...drawing.value, { x, y }] },
+    }));
+  };
+
   onFormSubmit = () => {
-    const { name, ingredients, description, prepTime, cookTime } = this.state;
+    const {
+      name,
+      ingredients,
+      description,
+      prepTime,
+      cookTime,
+      drawing,
+    } = this.state;
+
     let hasError = false;
 
     if (!name.value) {
@@ -206,6 +238,7 @@ class RecipeForm extends Component<Props, State> {
           ingredients: ingredients.value.filter(ingredient => !!ingredient),
           prepTime: prepTime.value,
           cookTime: cookTime.value,
+          drawing: drawing.value,
           likes: 0, // not using a mock server, I would omit the likes property as the server would create it for me
         })
         .catch(() => {
@@ -221,6 +254,7 @@ class RecipeForm extends Component<Props, State> {
       description,
       prepTime,
       cookTime,
+      drawing,
       submitting,
       submitError,
     } = this.state;
@@ -301,6 +335,10 @@ class RecipeForm extends Component<Props, State> {
               {cookTime.error}
             </Label>
           )}
+        </Form.Field>
+        <Form.Field>
+          <label>Paint your picture (not required)</label>
+          <Paint onDraw={this.onPaintDraw} drawing={drawing.value} />
         </Form.Field>
         <Button fluid loading={submitting}>
           Submit
