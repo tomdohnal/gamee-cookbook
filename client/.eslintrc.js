@@ -13,10 +13,7 @@ module.exports = {
     'jest/globals': true
   },
   rules: {
-    indent: ['error', 2, {
-        'SwitchCase': 1
-      },
-    ],
+    'indent': 'off',
     'prettier/prettier': [
       'error',
       {

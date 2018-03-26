@@ -1,5 +1,5 @@
 // @flow
-import * as React from 'react'
+import * as React from 'react';
 import { Container as SemanticUIContainer } from 'semantic-ui-react';
 
 import './style.scss';

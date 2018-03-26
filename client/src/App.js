@@ -5,7 +5,9 @@ import { Switch, BrowserRouter, Route } from 'react-router-dom';
 
 import Home, { type Props as HomeProps } from './pages/Home';
 import CreateRecipe from './pages/CreateRecipe';
-import RecipeDetail from './pages/RecipeDetail';
+import RecipeDetail, {
+  type Props as RecipeDetailProps,
+} from './pages/RecipeDetail';
 import EditRecipe from './pages/EditRecipe';
 import { fetchRecipes, type Recipes } from './redux/modules/recipes';
 
@@ -28,7 +30,9 @@ class App extends Component<Props, State> {
     this.props
       .fetchRecipes()
       .then(() => this.setState({ fetchingRecipes: false }))
-      .catch(() => this.setState({ fetchingError: true }));
+      .catch(() =>
+        this.setState({ fetchingRecipes: false, fetchingError: true }),
+      );
   }
 
   render() {
@@ -49,7 +53,17 @@ class App extends Component<Props, State> {
             )}
           />
           <Route exact path="/create" component={CreateRecipe} />
-          <Route exact path="/:id" component={RecipeDetail} />
+          <Route
+            exact
+            path="/:id"
+            render={(props: RecipeDetailProps) => (
+              <RecipeDetail
+                {...props}
+                loading={fetchingRecipes}
+                fetchingError={fetchingError}
+              />
+            )}
+          />
           <Route exact path="/edit/:id" component={EditRecipe} />
         </Switch>
       </BrowserRouter>

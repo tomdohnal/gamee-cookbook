@@ -14,6 +14,7 @@ import {
 type Props = {
   history: {
     goBack: () => void,
+    push: (path: string) => void,
   },
   createRecipe: (recipe: RecipeWithoutId) => Promise<Recipe>,
 };

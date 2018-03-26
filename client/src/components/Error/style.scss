@@ -1,6 +1,6 @@
 @import '../../theme/variables';
 
-.error {
+div.error {
   position: absolute;
   top: calc(50% + #{$headerHeight / 2});
   left: 50%;

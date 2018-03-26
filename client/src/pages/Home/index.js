@@ -7,7 +7,7 @@ import './style.scss';
 import Header from '../../components/Header';
 import Container from '../../components/Container';
 import Loader from '../../components/Loader';
-import LoadingError from '../../components/LoadingError';
+import Error from '../../components/Error';
 import { type Recipes } from '../../redux/modules/recipes';
 
 export type Props = {
@@ -31,7 +31,7 @@ const Home = ({ recipes, loading, fetchingError }: Props) => (
           </div>
         ))
       )}
-      {fetchingError && !loading && <LoadingError />}
+      {fetchingError && !loading && <Error />}
     </Container>
   </React.Fragment>
 );
