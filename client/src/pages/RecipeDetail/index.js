@@ -1,13 +1,15 @@
 // @flow
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'semantic-ui-react';
 
+import './style.scss';
 import Header from '../../components/Header';
 import Loader from '../../components/Loader';
 import Error from '../../components/Error';
 import Container from '../../components/Container';
 import Paint from '../../components/Paint';
-import { type Recipe } from '../../redux/modules/recipes';
+import { type Recipe, likeRecipe } from '../../redux/modules/recipes';
 
 export type Props = {
   recipe: Recipe,
@@ -21,11 +23,18 @@ export type Props = {
       id: string,
     },
   },
+  likeRecipe: (recipe: Recipe) => Promise<Recipe>,
 };
 
 class RecipeDetail extends React.Component<Props> {
   navigateHome = () => {
     this.props.history.push('/');
+  };
+
+  likeRecipe = () => {
+    const { recipe } = this.props;
+
+    this.props.likeRecipe(recipe);
   };
 
   render() {
@@ -79,7 +88,19 @@ class RecipeDetail extends React.Component<Props> {
                 </p>
                 <p>
                   <strong>Likes:&nbsp;</strong>
-                  {recipe.likes}
+                  {recipe.likes}&nbsp;
+                  {recipe.liked &&
+                  recipe.liked.find(
+                    liker => liker === localStorage.getItem('token'),
+                  ) ? (
+                    <Button disabled compact>
+                      Liked
+                    </Button>
+                  ) : (
+                    <Button onClick={this.likeRecipe} compact>
+                      Like
+                    </Button>
+                  )}
                 </p>
                 {recipe.drawing &&
                   recipe.drawing.length && (
@@ -115,4 +136,4 @@ const mapStateToProps = (
   return { loading: true };
 };
 
-export default connect(mapStateToProps)(RecipeDetail);
+export default connect(mapStateToProps, { likeRecipe })(RecipeDetail);

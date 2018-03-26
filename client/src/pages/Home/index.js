@@ -31,7 +31,9 @@ const Home = ({ recipes, loading, fetchingError }: Props) => (
               <Link to={`/${recipe.id}`}>{recipe.name}</Link>
             </h1>
             <p>
-              Cook time: {recipe.cookTime} Prep time: {recipe.prepTime}
+              {`Cook time: ${recipe.cookTime} Prep time: ${
+                recipe.prepTime
+              } Likes ${recipe.likes}`}
             </p>
           </div>
         ))

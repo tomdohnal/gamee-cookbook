@@ -1,4 +1,6 @@
 // @flow
+import uniqid from 'uniqid';
+
 import createReducer from '../createReducer';
 import axios from '../../axios';
 
@@ -19,6 +21,7 @@ export type RecipeWithoutId = {
   prepTime: number,
   cookTime: number,
   likes: number,
+  liked?: Array<string>,
   drawing?: Array<Point>,
 };
 
@@ -83,17 +86,27 @@ type LikeRecipeAction = {
 
 type LikeRecipeDispatch = (action: LikeRecipeAction) => void;
 
-export const likeRecipe = (recipeId: number, currentLikesCount: number) => (
+export const likeRecipe = ({ id, likes, liked }: Recipe) => (
   dispatch: LikeRecipeDispatch,
-) =>
-  axios
-    .patch(`/recipes/${recipeId}`, { likes: currentLikesCount + 1 })
+) => {
+  if (!localStorage.getItem('token')) {
+    localStorage.setItem('token', uniqid());
+  }
+
+  const token = localStorage.getItem('token');
+
+  return axios
+    .patch(`/recipes/${id}`, {
+      likes: likes + 1,
+      liked: liked ? [...liked, token] : [token],
+    })
     .then(({ data }) => {
       dispatch({
         type: LIKE_RECIPE,
-        payload: { likedRecipeId: recipeId, recipe: data },
+        payload: { likedRecipeId: id, recipe: data },
       });
     });
+};
 
 export default createReducer([], {
   [FETCH_RECIPES]: (state: Recipes, action: FetchRecipesAction): Recipes =>
