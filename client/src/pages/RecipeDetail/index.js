@@ -51,10 +51,10 @@ class RecipeDetail extends React.Component<Props> {
           {!loading && fetchingError && <Error />}
           {!loading &&
             !fetchingError &&
-            !recipe.id && <Error>Recipe not found.</Error>}
+            !recipe && <Error>Recipe not found.</Error>}
           {!loading &&
             !fetchingError &&
-            recipe.id && (
+            !!recipe && (
               <React.Fragment>
                 <h1>{recipe.name}</h1>
                 <p>{recipe.description}</p>

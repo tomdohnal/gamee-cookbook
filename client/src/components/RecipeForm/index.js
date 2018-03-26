@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 import { Form, Button, Label } from 'semantic-ui-react';
 
 import './style.scss';
-import { type RecipeWithoutId } from '../../redux/modules/recipes';
+import { type RecipeWithoutId, type Recipe } from '../../redux/modules/recipes';
 
 type Props = {
-  onFormSubmit: (recipe: RecipeWithoutId) => mixed,
+  onFormSubmit: (recipe: RecipeWithoutId) => Promise<mixed>,
+  recipe?: Recipe,
 };
 
 type State = {
@@ -30,7 +31,8 @@ type State = {
     value: number,
     error: string,
   },
-  submiting: boolean,
+  submitting: boolean,
+  submitError: boolean,
 };
 
 type Target = {
@@ -42,26 +44,27 @@ type Target = {
 class RecipeForm extends Component<Props, State> {
   state = {
     name: {
-      value: '',
+      value: (!!this.props.recipe && this.props.recipe.name) || '',
       error: '',
     },
     ingredients: {
-      value: [''],
+      value: (!!this.props.recipe && this.props.recipe.ingredients) || [''],
       error: '',
     },
     description: {
-      value: '',
+      value: (!!this.props.recipe && this.props.recipe.description) || '',
       error: '',
     },
     prepTime: {
-      value: 0,
+      value: (!!this.props.recipe && this.props.recipe.prepTime) || 0,
       error: '',
     },
     cookTime: {
-      value: 0,
+      value: (!!this.props.recipe && this.props.recipe.cookTime) || 0,
       error: '',
     },
-    submiting: false,
+    submitting: false,
+    submitError: false,
   };
 
   onNameInputChange = ({ target: { value } }: Target) => {
@@ -129,7 +132,7 @@ class RecipeForm extends Component<Props, State> {
       this.setState(({ name }) => ({
         name: { ...name, error: 'Enter the name of your recipe' },
       }));
-    } else if (!/^[a-zA-Z0-9,./:()-]+$/.test(name.value)) {
+    } else if (!/^[a-zA-Z0-9,./:()-\s]+$/.test(name.value)) {
       hasError = true;
 
       this.setState(({ name }) => ({
@@ -160,7 +163,7 @@ class RecipeForm extends Component<Props, State> {
           error: 'Enter the description of your recipe',
         },
       }));
-    } else if (!/^[a-zA-Z0-9,./:()-]+$/.test(description.value)) {
+    } else if (!/^[a-zA-Z0-9,./:()-\s]+$/.test(description.value)) {
       hasError = true;
 
       this.setState(({ description }) => ({
@@ -194,16 +197,20 @@ class RecipeForm extends Component<Props, State> {
     }
 
     if (!hasError) {
-      this.setState({ submiting: true });
+      this.setState({ submitting: true });
 
-      this.props.onFormSubmit({
-        name: name.value,
-        description: description.value,
-        ingredients: ingredients.value,
-        prepTime: prepTime.value,
-        cookTime: cookTime.value,
-        likes: 0, // not using a mock server, I would omit the likes property as the server would create it for me
-      });
+      this.props
+        .onFormSubmit({
+          name: name.value,
+          description: description.value,
+          ingredients: ingredients.value.filter(ingredient => !!ingredient),
+          prepTime: prepTime.value,
+          cookTime: cookTime.value,
+          likes: 0, // not using a mock server, I would omit the likes property as the server would create it for me
+        })
+        .catch(() => {
+          this.setState({ submitting: false, submitError: true });
+        });
     }
   };
 
@@ -214,7 +221,8 @@ class RecipeForm extends Component<Props, State> {
       description,
       prepTime,
       cookTime,
-      submiting,
+      submitting,
+      submitError,
     } = this.state;
 
     return (
@@ -294,9 +302,14 @@ class RecipeForm extends Component<Props, State> {
             </Label>
           )}
         </Form.Field>
-        <Button fluid loading={submiting}>
+        <Button fluid loading={submitting}>
           Submit
         </Button>
+        {submitError && (
+          <Label basic pointing>
+            There has been an error while submitting your recipe.
+          </Label>
+        )}
       </Form>
     );
   }

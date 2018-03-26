@@ -8,7 +8,7 @@ import CreateRecipe from './pages/CreateRecipe';
 import RecipeDetail, {
   type Props as RecipeDetailProps,
 } from './pages/RecipeDetail';
-import EditRecipe from './pages/EditRecipe';
+import EditRecipe, { type Props as EditRecipeProps } from './pages/EditRecipe';
 import { fetchRecipes, type Recipes } from './redux/modules/recipes';
 
 type Props = {
@@ -64,7 +64,17 @@ class App extends Component<Props, State> {
               />
             )}
           />
-          <Route exact path="/edit/:id" component={EditRecipe} />
+          <Route
+            exact
+            path="/edit/:id"
+            render={(props: EditRecipeProps) => (
+              <EditRecipe
+                {...props}
+                loading={fetchingRecipes}
+                fetchingError={fetchingError}
+              />
+            )}
+          />
         </Switch>
       </BrowserRouter>
     );

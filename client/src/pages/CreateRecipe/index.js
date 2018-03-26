@@ -23,7 +23,7 @@ class CreateRecipe extends React.Component<Props> {
   onFormSubmit = (recipe: RecipeWithoutId) => {
     const { createRecipe } = this.props;
 
-    createRecipe(recipe).then(() => this.props.history.push('/'));
+    return createRecipe(recipe).then(() => this.props.history.push('/'));
   };
 
   navigateBack = () => {
